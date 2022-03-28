@@ -9,6 +9,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <stdlib.h>
+#include <map>
 #include "utilities.h"
 #include "simulatedAnnealing.h"
 
@@ -145,7 +146,7 @@ int main() {
 
             tuple<tuple<vector<int>,vector<bool>>,double,double> solution;
             int nMethod = chooseNeighborMethod();
-
+            //cout << "Method = " << nMethod << endl;
             solution = simulatedAnnealing(p,w,c,initialTemp,finalTemp,nMethod);
             printSolution(solution);
 
@@ -160,7 +161,7 @@ int main() {
             cin >> M;
 
             int nMethod = chooseNeighborMethod();
-
+            //cout << "Method = " << nMethod << endl;
             for(int i = 0; i < M; i++) {
                 tuple<tuple<vector<int>,vector<bool>>,double,double> sol;
                 sol = simulatedAnnealing(p,w,c,initialTemp,finalTemp,nMethod);
@@ -168,8 +169,20 @@ int main() {
             }
 
             generateReport(solutions);
+
+
+            cout << "Frequency of solutions: \n";
+            map<int,int> counter;
+
+            for(int i = 0; i < solutions.size(); i++) {
+                int f = get<1>(solutions[i]);
+                counter[f]++; 
+            }
+            for(auto i : counter) {
+                cout << i.first << ": " << i.second << "\n";
+            }
+            cout << "\n";
         }
-    
     }
 
     return 0;
