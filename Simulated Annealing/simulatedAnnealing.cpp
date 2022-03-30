@@ -228,24 +228,29 @@ std::tuple<std::tuple<std::vector<int>,std::vector<bool>>, double, double> simul
     using namespace std;
     vector<bool> x = initialSolution(c,p,w);
     double fx = f(x,p);
+
+    vector<bool> bestSol = x;
+    double fBest = fx;
+
     while(temp > fTemp) {
         vector<bool> y;
         if(!improvedNeighbor) y = neighbor(x,w,c);
         else y = neighborImproved(x,w,c);
 
         double fy = f(y,p);
-        if(fy >= fx) {
+        if(fy > fBest) {
+            bestSol = y;
+            fBest = fy;
+        }
+
+        double rn = randomDouble(0,1);
+        if(fy > fx || rn < exp((fy - fx)/temp)) {
             x = y;
             fx = f(x,p);
-        } else {
-            double rn = randomDouble(0,1);
-            if(rn < exp((fy - fx)/temp)) {
-                x = y;
-                fx = f(x,p);
-            } 
         }
+    
         temp = T(temp);
     }
 
-    return {{getIndexFromBool(x),x},f(x,p),g(x,w)};
+    return {{getIndexFromBool(bestSol),bestSol},f(bestSol,p),g(bestSol,w)};
 }
