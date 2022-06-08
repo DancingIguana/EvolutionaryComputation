@@ -287,18 +287,17 @@ def AG(n, # N Polygons
        pCross = 0.95, # Cross probability
        pMut = 0.05, # Mutation probability
        vertexP =0.25, # Probability of moving a vertex once in mutation
-       vPert = 15, # Perturbation interval of (-a,a) when mutating coordinates
+       vPert = 15/2, # Perturbation interval of (-a,a) when mutating coordinates
        colorP = 0.25, # Probability of changing an RGBA  value once in mutation
        cPert = 25, # Perturbation interval of (-a,a) when mutating a color
        tPert = 10, # Perturbation interval of (-a,a) when mutating transparency
        spMut = 0.1,# Probability of choosing uniform mutation
        ): 
-  
   if curGen == 0:
     population = initialPopulation(mu,n,refImgCv2,width = width,height = height)
     return population
   else:
-    sons = copy.deepcopy(Population(curPop.crossPopulation(crossPoints, pCross), mu = mu, refImgCv2 = refImgCv2))
+    sons = copy.deepcopy(Population(curPop.crossPopulation(crossPoints, pCross), mu = mu, refImgCv2 = refImgCv2,width = width, height = height))
     
     sons.mutate(vertexP = vertexP,
                 colorP = colorP,
